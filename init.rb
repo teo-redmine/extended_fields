@@ -108,11 +108,11 @@ Rails.configuration.to_prepare do
     end
 end
 
-Redmine::Plugin.register :extended_fields do
-    name 'Extended fields'
-    author 'Mike Sweetman'
-    author_url 'http://www.andriylesyuk.com'
-    description 'Adds new custom field types, improves listings etc.'
-    url 'https://github.com/masweetman/extended_fields.git'
-    version '1.0.0'
+Redmine::Plugin.register :teo_extended_fields do
+    name 'Teo Extended fields plugin'
+    author 'Junta de Andalucía. Andriylesyuk. Mike Sweetman.'
+    author_url "http://www.juntadeandalucia.es"  
+    url 'https://github.com/teo-redmine/teo_extended_fields.git'
+    description 'Habilita nuevos tipos de campos personalizados, mejora listados, etc.'
+    version '0.0.1'
 end
