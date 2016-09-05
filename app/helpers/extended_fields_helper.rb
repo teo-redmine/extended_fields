@@ -5,19 +5,12 @@ module ExtendedFieldsHelper
         filename.gsub!(%r{(^_+|_+$)}, '')
 
         format_extension = ''
-        # Redmine 2.x.x
+        
         if respond_to?(:formats)
             format_extension = ".#{formats.first}"
-        # Redmine 1.x.x
-        elsif request && request.respond_to?(:template_format)
-            format_extension = ".#{request.template_format}"
         # Mailer
         elsif controller
-            # Redmine 1.x.x
-            if controller.respond_to?(:template)
-                format_extension = ".#{controller.template.template_format}"
-            # Redmine 2.x.x
-            elsif controller.respond_to?(:lookup_context)
+            if controller.respond_to?(:lookup_context)
                 format_extension = ".#{controller.lookup_context.formats.first}"
             end
         end

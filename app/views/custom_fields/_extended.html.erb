@@ -38,9 +38,7 @@
     </script>
   <% end %>
 
-  <% if Redmine::VERSION::MAJOR > 1 && Redmine::VERSION::MINOR > 1 && !defined?(ChiliProject) %>
-    <%= javascript_tag('toggle_extended_field_format();') %>
-  <% end %>
+  <%= javascript_tag('toggle_extended_field_format();') %>
 
 <!-- Rails 2 + prototype -->
 <% else %>
