@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'redmine'
 
 require_dependency 'extended_fields_hook'
