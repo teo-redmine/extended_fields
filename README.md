@@ -1,8 +1,8 @@
-=teo_extended_fields
+# teo_extended_fields
 
 TEO Extended Fields es un plugin de redmine que permite añadir campos personalizados  con el formato "Proyecto", permitiendo por ejemplo vincular tickets de diferentes contenedores entre sí de una forma más natural y directa.
 
-== Instalación
+## Instalación
 
 Copiar o realizar un checkout de este repositorio en el directorio de plugins de
 redmine: 
@@ -19,7 +19,7 @@ El plugin requiere la ejecución de migraciones, para ello dentro del directorio
 
 Por último sólo queda reiniciar Redmine.
 
-== Desinstalación
+## Desinstalación
 
 Para desinstalar el plugin en primer lugar habría que deshacer las migraciones realizadas en la instalación del mismo, para ello nos situamos en el directorio de redmine y ejecutamos:
 
@@ -27,7 +27,8 @@ Para desinstalar el plugin en primer lugar habría que deshacer las migraciones 
 
 posteriormente  eliminamos la carpeta del plugin y reiniciamos Redmine.
 
----
+## License
+
 Author: Junta de Andalucía
 
 License: GPLv2
