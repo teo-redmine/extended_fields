@@ -45,5 +45,5 @@ Redmine::Plugin.register :teo_extended_fields do
     author_url "http://www.juntadeandalucia.es"  
     url 'https://github.com/teo-redmine/teo_extended_fields.git'
     description 'Habilita nuevos tipos de campos personalizados, mejora listados, etc.'
-    version '0.0.1'
+    version '1.1.0'
 end
