@@ -1,4 +1,4 @@
-
+# encoding: utf-8
 module Redmine
     module FieldFormat
 
