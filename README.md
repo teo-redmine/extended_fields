@@ -1,4 +1,4 @@
-# teo_extended_fields (V1.1.0)
+# teo_extended_fields
 
 TEO Extended Fields es un plugin de redmine que permite añadir campos personalizados  con el formato "Proyecto", permitiendo por ejemplo vincular tickets de diferentes contenedores entre sí de una forma más natural y directa.
 
