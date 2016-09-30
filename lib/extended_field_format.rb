@@ -146,7 +146,7 @@ module Redmine
                     id_user = User.current.id
                     role_ids = custom_field.project_user_role.map(&:to_s).reject(&:blank?).map(&:to_i)
                     if role_ids.any?
-                      filterProjects = Project.joins(memberships: :user).where("users.id = ? and members.id IN (SELECT DISTINCT member_id FROM redmineteo.member_roles WHERE role_id IN (?))", id_user, role_ids)
+                      filterProjects = Project.joins(memberships: :user).where("users.id = ? and members.id IN (SELECT DISTINCT member_id FROM member_roles WHERE role_id IN (?))", id_user, role_ids)
                     end
                 end
                 filterProjects
