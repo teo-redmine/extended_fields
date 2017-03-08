@@ -27,10 +27,10 @@ module Redmine
 
             # Lista de posibles valores que se pueden seleccionar a la hora
             # de utilizar el filtro avanzado. Posteriormente a la llamada
-            # del metedo cuando se pinta el select te filtra los caracteres extraños
+            # del metodo cuando se pinta el select te filtra los caracteres extraños
             # como el '&' lo que imposibilita poner un espacio en blanco del tipo '&nbsp;'
             def possible_values_options(custom_field, object = nil)
-                projects = projects_filtered_with_current_user_and_selected_roles(custom_field)
+                projects = projects_filtered_with_current_user_and_selected_roles(nil, custom_field)
                 s = []
                 Project.project_tree(projects) do |project, level|
                     s << [((level > 0 ? '» ' * level : '') + project.name), project.id.to_s]
@@ -69,7 +69,7 @@ module Redmine
                         blank_option = view.content_tag('option', '&nbsp;'.html_safe, :value => '')
                     end
                 end
-                filtered_projects = projects_filtered_with_current_user_and_selected_roles(custom_value.custom_field)
+                filtered_projects = projects_filtered_with_current_user_and_selected_roles(custom_value, custom_value.custom_field)
                 project_selected = Project.find_by_id(custom_value.value)
                 options_tags = blank_option + project_tree_options_for_select(filtered_projects, view, :selected => project_selected)
                 s = view.select_tag(tag_name, options_tags, options.merge(:id => tag_id, :multiple => custom_value.custom_field.multiple?))
@@ -138,15 +138,20 @@ module Redmine
             # Metodo privado que devuelve el listado de proyectos a los que
             # pertenece el usuario actual segun los roles definidos en el 
             # campo personalizado. En caso de ser un usuario administrador
-            # se devuelven todos.
-            def projects_filtered_with_current_user_and_selected_roles(custom_field)
+            # se devuelven todos. En caso de no tener permisos para el proyecto
+            # que este guardado, debe cargarlo igualmente.
+            def projects_filtered_with_current_user_and_selected_roles(custom_value, custom_field)
                 filterProjects = Project.visible.order(:id)
                 user = User.current
                 if custom_field.project_user_role.is_a?(Array) && !user.admin
                     id_user = User.current.id
                     role_ids = custom_field.project_user_role.map(&:to_s).reject(&:blank?).map(&:to_i)
                     if role_ids.any?
-                      filterProjects = Project.joins(memberships: :user).where("users.id = ? and members.id IN (SELECT DISTINCT member_id FROM member_roles WHERE role_id IN (?))", id_user, role_ids)
+                        if custom_value == nil
+                            filterProjects = Project.joins(memberships: :user).where("users.id = ? and members.id IN (SELECT DISTINCT member_id FROM member_roles WHERE role_id IN (?))", id_user, role_ids)
+                        else
+                            filterProjects = Project.joins(memberships: :user).where("(users.id = ? and members.id IN (SELECT DISTINCT member_id FROM member_roles WHERE role_id IN (?))) or project_id = ?", id_user, role_ids, custom_value.value)
+                        end
                     end
                 end
                 filterProjects
