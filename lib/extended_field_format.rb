@@ -147,10 +147,24 @@ module Redmine
                     id_user = User.current.id
                     role_ids = custom_field.project_user_role.map(&:to_s).reject(&:blank?).map(&:to_i)
                     if role_ids.any?
-                        if custom_value == nil
+                        if custom_value == nil || custom_value.value == nil
                             filterProjects = Project.joins(memberships: :user).where("users.id = ? and members.id IN (SELECT DISTINCT member_id FROM member_roles WHERE role_id IN (?))", id_user, role_ids)
                         else
-                            filterProjects = Project.joins(memberships: :user).where("(users.id = ? and members.id IN (SELECT DISTINCT member_id FROM member_roles WHERE role_id IN (?))) or project_id = ?", id_user, role_ids, custom_value.value)
+                            filterProjects = Project.joins(memberships: :user).where("users.id = ? and members.id IN (SELECT DISTINCT member_id FROM member_roles WHERE role_id IN (?))", id_user, role_ids)
+                            filterProjectsAux = Project.where("projects.id = ?", custom_value.value)
+                            if filterProjectsAux != nil && !filterProjectsAux.empty?
+                                for fil_pro_aux in filterProjectsAux
+                                    existe = false
+                                    for fil_pro in filterProjects
+                                        if !existe && fil_pro_aux.id == fil_pro.id
+                                            existe = true
+                                        end
+                                    end
+                                    if !existe
+                                        filterProjects.push(fil_pro_aux)
+                                    end
+                                end
+                            end
                         end
                     end
                 end
